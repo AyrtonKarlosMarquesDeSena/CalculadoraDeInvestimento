@@ -35,10 +35,9 @@
               required
             />
           </div>
-         
         </div>
 
-        <div class="flex w-full flex-col px-4 my-2  h-[4.25rem]">
+        <div class="flex w-full flex-col px-4 my-2 h-[4.25rem]">
           <label for="additional-contribution" class="font-bold text-gray-700"
             >Aportes adicionais</label
           >
@@ -55,12 +54,11 @@
               class="w-5/6 rounded-r-lg bg-white px-2"
               id="additional-contribution"
               name="additional-contribution"
-              
             />
           </div>
         </div>
 
-        <div class="flex w-full flex-col px-4 my-2  h-[4.25rem]">
+        <div class="flex w-full flex-col px-4 my-2 h-[4.25rem]">
           <label for="time-amount" class="font-bold text-gray-700">Prazo</label>
           <div class="flex">
             <input
@@ -82,7 +80,7 @@
           </div>
         </div>
 
-        <div class="flex w-full flex-col px-4 my-2  h-[4.25rem]">
+        <div class="flex w-full flex-col px-4 my-2 h-[4.25rem]">
           <label for="return-rate" class="font-bold text-gray-700"
             >Rentabilidade:</label
           >
@@ -112,7 +110,7 @@
           </div>
         </div>
 
-        <div class="flex w-full flex-col px-4 my-2  h-[4.25rem]">
+        <div class="flex w-full flex-col px-4 my-2 h-[4.25rem]">
           <label for="tax-rate" class="font-bold text-gray-700"
             >Impostos sobre lucro:</label
           >
@@ -142,14 +140,27 @@
         >
           Calcular
         </button>
-        <button id="clear-form" class="w-1/2 rounded-lg cursor-pointer hover:bg-emerald-500">
+        <button
+          id="clear-form"
+          class="w-1/2 rounded-lg cursor-pointer hover:bg-emerald-500"
+        >
           Limpar
         </button>
       </div>
     </aside>
 
-    <main>
-      <p class="text-base">Resultados</p>
+    <main class="h-full">
+      <section id="charts-container">
+        <div class="h-[36dvh]">
+          <p>Resultado Final</p>
+          <canvas id="final-money-ditribution"></canvas>
+        </div>
+
+        <div class="h-[56dvh]">
+          <p>Progressão</p>
+          <canvas id="progression"></canvas>
+        </div>
+      </section>
     </main>
 
     <script type="module" src="/src/main.js"></script>

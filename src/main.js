@@ -1,13 +1,25 @@
 import generateReturnsArray from "./investimento";
-const form = document.getElementById("investment-form");
-const clearFormButton = document.getElementById("clear-form")
+import { Chart } from "chart.js/auto";
 
+const finalMoneyChart = document.getElementById("final-money-ditribution");
+const progressionChart = document.getElementById("progression");
+
+const form = document.getElementById("investment-form");
+const clearFormButton = document.getElementById("clear-form");
+let  doughnutChartReference = {}
+let progressionChartReference = {}
+
+
+function formatCurrency(value) {
+  return value.toFixed(2);
+}
 
 function renderProgression(evt) {
   evt.preventDefault();
   if (document.querySelector(".error")) {
     return;
   }
+  resetChart()
   const startingAmount = Number(
     document.getElementById("starting-amount").value.replace(",", "."),
   );
@@ -32,7 +44,70 @@ function renderProgression(evt) {
     returnRate,
     returnRatePeriod,
   );
+
+  const finalInvestmentObject = returnsArray[returnsArray.length - 1];
+
   console.log(returnsArray);
+  doughnutChartReference = new Chart(finalMoneyChart, {
+    type: "doughnut",
+    data: {
+      labels: ["Investimento Total", "Rendimento", "Imposto"],
+      datasets: [
+        {
+          label: "My First Dataset",
+          data: [
+            formatCurrency(finalInvestmentObject.investedAmount),
+            formatCurrency(
+              finalInvestmentObject.totalInterestReturn * (1 - taxRate / 100),
+            ),
+            formatCurrency(
+              (finalInvestmentObject.totalInterestReturn * taxRate) / 100,
+            ),
+          ],
+          backgroundColor: [
+            "rgb(255, 99, 132)",
+            "rgb(54, 162, 235)",
+            "rgb(255, 205, 86)",
+          ],
+          hoverOffset: 4,
+        },
+      ],
+    },
+  });
+
+  progressionChartReference =  new Chart(progressionChart, {
+    type: "bar",
+    data: {
+      labels: returnsArray.map((investmentObject) => investmentObject.month),
+      datasets: [
+        {
+          label: "Total Investido",
+          data: returnsArray.map((investmentObject) =>
+            formatCurrency(investmentObject.investedAmount),
+          ),
+          backgroundColor: "rgb(255, 99, 132)",
+        },
+        {
+          label: "Retorno do Investimento",
+          data: returnsArray.map((investmentObject) =>
+            formatCurrency(investmentObject.totalInterestReturn),
+          ),
+          backgroundColor: "rgb(54, 162, 235)",
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: {
+          stacked: true,
+        },
+        y: {
+          stacked: true,
+        },
+      },
+    },
+  });
 }
 
 function validateInput(evt) {
@@ -55,7 +130,7 @@ function validateInput(evt) {
     grandParentElement.appendChild(errorTextElement);
   } else if (
     evt.target.name === "time-amount" &&
-    !Number.isInteger(Number(inputValue) || Number(inputValue) <= 0)
+    !Number.isInteger(Number(inputValue))
   ) {
     parentElement.classList.add("error");
     errorTextElement.classList.add("text-red-500", "error-text");
@@ -64,19 +139,32 @@ function validateInput(evt) {
   }
 }
 
+function isObjectEmpty(obj){
+  return Object.keys(obj).length === 0
+}
+
+function resetChart(){
+  if (!isObjectEmpty(doughnutChartReference) && !isObjectEmpty(progressionChartReference)){
+    // Obs: destroy é um metodo da biblioteca Chart.js
+    doughnutChartReference.destroy()
+    progressionChartReference.destroy()
+  }
+}
+
 function clearForm() {
-  form['starting-amount'].value = ''
-  form['additional-contribution'].value = ''
-  form['time-amount'].value = ''
-  form['return-rate'].value = ''
-  form['tax-rate'].value = ''
-  
-  const errorInputContainers = document.querySelectorAll('.error')
+  form["starting-amount"].value = "";
+  form["additional-contribution"].value = "";
+  form["time-amount"].value = "";
+  form["return-rate"].value = "";
+  form["tax-rate"].value = "";
 
+  resetChart()
 
-  for (const errorInputContainer of errorInputContainers){
-    errorInputContainer.classList.remove('error')
-    errorInputContainer.parentElement.querySelector('p').remove()
+  const errorInputContainers = document.querySelectorAll(".error");
+
+  for (const errorInputContainer of errorInputContainers) {
+    errorInputContainer.classList.remove("error");
+    errorInputContainer.parentElement.querySelector("p").remove();
   }
 }
 
@@ -87,4 +175,4 @@ for (const forElement of form) {
 }
 
 form.addEventListener("submit", renderProgression);
-clearFormButton.addEventListener("click", clearForm)
+clearFormButton.addEventListener("click", clearForm);

@@ -41,7 +41,7 @@ export default function generateReturnsArray(
     const totalAmount =
       returnArray[timeReference - 1].totalAmount * finalReturnRate +
       mouthyContribution;
-    const interestReturns = returnArray[timeReference - 1].totalAmount * finalReturnRate
+    const interestReturns = returnArray[timeReference - 1].totalAmount * (finalReturnRate - 1)
     const investedAmount = startingAmount + mouthyContribution * timeReference
     const  totalInterestReturn = totalAmount - investedAmount;
     returnArray.push({
