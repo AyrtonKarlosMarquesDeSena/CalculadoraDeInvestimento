@@ -57,7 +57,7 @@ rendimentoLiquido = rendimentoTotal - imposto
 ## 📸 Capturas de Tela
 
 ### Desktop
-![Desktop](./public/investimento1.png)
+![Desktop](./public/investimento1.jpeg)
 
 ### Mobile
 ![Mobile](./public/investimento2.jpeg)
